@@ -1,3 +1,4 @@
+#for 2-comp
 distarray1 = Rarray(Nof(list_2))
 delete hydrogen list_1.mol
 delete hydrogen list_2.mol
@@ -14,6 +15,37 @@ for i=1, Nof(list_1)
 		prop2_2=String(list_2.synton_id_2[j])
 # Check for matching properties and calculate SRMSD
 		if((prop1_1==prop2_1) | (prop1_2==prop2_2))then
+			print "yes yes"
+			rmsd = Srmsd(list_1.mol[i] list_2.mol[j])[1,1]
+			print "SRMSD between ", list_1.mol[i], " and ", list_2.mol[j], ": ", rmsd
+			distarray1[j]=rmsd
+
+		endif
+
+	endfor
+
+endfor
+
+add column list_2 distarray1 name="RMSD"
+#for 3-comp
+distarray1 = Rarray(Nof(list_2))
+delete hydrogen list_1.mol
+delete hydrogen list_2.mol
+delete  prop1_1,  prop1_2, prop2_1, prop2_2, prop1_3, prop2_3
+delete rmsd
+
+# SRMSD calculation
+
+for i=1, Nof(list_1)
+	prop1_1=String(list_1.synton_id_1[i])
+	prop1_2=String(list_1.synton_id_2[i])
+	prop1_3=String(list_1.synton_id_3[i])
+	for j=1, Nof(list_2)
+		prop2_1=String(list_2.synton_id_1[j])
+		prop2_2=String(list_2.synton_id_2[j])
+		prop2_3=String(list_2.synton_id_3[j])
+# Check for matching properties and calculate SRMSD
+		if((prop1_1==prop2_1) | (prop1_2==prop2_2) | (prop1_3==prop2_3))then
 			print "yes yes"
 			rmsd = Srmsd(list_1.mol[i] list_2.mol[j])[1,1]
 			print "SRMSD between ", list_1.mol[i], " and ", list_2.mol[j], ": ", rmsd
